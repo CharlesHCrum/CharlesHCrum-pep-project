@@ -9,13 +9,17 @@ import java.util.List;
 
 public class MessageDAO {
 
+    /**
+     * Creates a message
+     * @param message
+     * @return Message created
+     */
     public Message createMessage(Message message){
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "INSERT INTO message (posted_by, message_text, time_posted_epoch) VALUES (?,?,?)" ;
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            //write preparedStatement's setString and setInt methods here.
             preparedStatement.setInt(1, message.getPosted_by());
             preparedStatement.setString(2, message.getMessage_text());
             preparedStatement.setLong(3, message.getTime_posted_epoch());
@@ -34,6 +38,10 @@ public class MessageDAO {
 
     }
 
+    /**
+     * Retrieves all messages from database, is empty if there are no messages
+     * @return a list of all messages
+     */
     public List<Message> getAllMessages(){
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
@@ -50,7 +58,11 @@ public class MessageDAO {
         }
         return messages;
     }
-
+    /**
+     * Retrieves all messages posted by a particular user, is empty if there are no messages
+     * @param account_id
+     * @return list of all messages posted by a particular user
+     */
     public List<Message> getAllMessagesFromUser(int account_id){
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
@@ -69,6 +81,11 @@ public class MessageDAO {
         return messages;
     }
 
+    /**
+     * Retrieves a particular message by message id
+     * @param message id
+     * @return Message object
+     */
     public Message getMessageByID(int id){
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -92,6 +109,11 @@ public class MessageDAO {
         return null;
     }
 
+    /**
+     * Deletes a message from database by its message id
+     * @param message id
+     * @return boolean, true if message is deleted successfully 
+     */
     public Boolean deleteMessage(int id){
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -111,6 +133,11 @@ public class MessageDAO {
         return false;
     }
 
+    /**
+     * Updates a message from database by its message id
+     * @param message id
+     * @return boolean, true if message is updated successfully 
+     */
     public Boolean updateMessage(String message_text, int id){
         Connection connection = ConnectionUtil.getConnection();
         try {

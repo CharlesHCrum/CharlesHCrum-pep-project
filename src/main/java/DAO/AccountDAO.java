@@ -2,38 +2,22 @@ package DAO;
 
 import Model.Account;
 import Util.ConnectionUtil;
-
 import java.sql.*;
-
+/**
+ * DAO class for Account which manages Account services
+ */
 public class AccountDAO {
-
-    public Boolean checkLogin(String username, String password){
-        Connection connection = ConnectionUtil.getConnection();
-        try {
-            //Write SQL logic here
-            String sql = "SELECT * FROM account WHERE username = ? AND password = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            //write preparedStatement's setInt method here.
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs!= null){
-                return true;
-            }
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
-
+    /**
+     * Method which registers a new account 
+     * @param account
+     * @return Account registered
+     */
     public Account registerAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "INSERT INTO account (username, password) VALUES (?,?)" ;
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            //write preparedStatement's setString and setInt methods here.
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
             preparedStatement.executeUpdate();
@@ -49,7 +33,12 @@ public class AccountDAO {
         return null;
     }
 
-    public Account loginAccount(Account account){
+    /**
+     * Method to process logins
+     * @param account to be logged in
+     * @return Account which is logged in
+     */
+     public Account loginAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "SELECT * FROM account WHERE username = ? AND password = ?";
